@@ -11,7 +11,7 @@ Because it's fun! This is a silly project I did on an STM32 microcontroller I ha
 
 # What does this actually do?
 
-Like I said, the scope changed a lot as I realized how long running all this computationally-intensive stuff became. Over time, the scope narrowed to this: I took all 13 of the final four picks made in my bracket pool in 2023. Then, I calculated which one had the highest probability of winning (assuming you take Bart Torvik at face value: https://barttorvik.com/trank.php#)
+Like I said, the scope changed a lot as I realized how long running all this computationally-intensive stuff became. Over time, the scope narrowed to this: I took all 13 of the final four picks made in my bracket pool in 2023. Then, I calculated which one had the highest probability of winning (assuming you take fivethirtyeight win probabilities at face value)
 
 The meat of it is in f4s.h and find_best_f4.c
 
