@@ -7,7 +7,7 @@ The scope of this project changed throughout in response to hardware limitations
 It's a harder challenge than it sounds, and it came about because I do a march madness pool with my friends every year. I noticed that there was a lot of literature on the best way to structure your bracket beforehand (see here: https://www.bracketvoodoo.com/#!/content/strategy_guide_preview), but no tools about how to optimize your bracket if the precise outcomes are known! If you play with the same people every year, how do you plan to optimize your bracket for next year when you don't even know the optimal strategy for past years?
 
 # Why a microcontroller?
-Because it's fun! This is a silly project I did on an STM32 microcontroller I had left over from college. Is a microcontroller the best way to do this? Absolutely not, but I had fun. Pythopn would obviously be the "correct" way to do this
+Because it's fun! This is a silly project I did on an STM32 microcontroller I had left over from college. Is a microcontroller the best way to do this? Absolutely not, but I had fun. Python would obviously be the "correct" way to do this
 
 # What does this actually do?
 
