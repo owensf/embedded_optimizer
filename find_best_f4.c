@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "f4s.h"
+// Fred Owens
+/* find_best_f4.c attempts to find the highest win probability final four given that other final four picks in the pool are known. The algorithm has two broad parts:
+1) Determine all teams that have a F4 probability > 10% or that have been picked by someone else in the pool. Create every permutation from these eligible teams
+2) Iterate through list of final fours, calculating the win probability for each. Save win probability and final four if it's the highest win probability
+*/
 
+// test_generator is a data structure for keeping track of "test" final four scenarios.  
 void init_test_gen(test_generator * test_gen){
 	for (uint16_t i = 0; i < NUM_ELEMENTS_BRACKET; i++){
 		test_gen -> test_f4[i] = 0;
@@ -26,13 +32,10 @@ void init_test_gen(test_generator * test_gen){
 	test_gen -> scenario_tracker = 0;
 }
 
-/* find winner in a specific scenario
- * return number of winners
-*/
+// find the winning pool in a given scenario by calculating the number of points each bracket gets in that scenario. given_f4 is the scenario, f4s_list is the list of the f4s, and winners keeps track of which bracket won
+// the "winners" array is necessary because there can easily be multiple winners
 uint16_t find_winner_scenario(uint16_t given_f4[NUM_ELEMENTS_BRACKET], uint16_t f4s_list[NUM_BRACKETS][NUM_ELEMENTS_BRACKET], uint16_t winners[NUM_BRACKETS+1]){
 	uint16_t i, j;
-	//TODO: maybe not a great idea to have it be static?? memory issues?
-	// should I pass in the arg as a pointer, then modify it within here?
 	//static uint16_t winners[NUM_BRACKETS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	uint16_t winners_tracker = 0;
 	uint16_t max_points = 0;
@@ -68,7 +71,7 @@ uint16_t find_winner_scenario(uint16_t given_f4[NUM_ELEMENTS_BRACKET], uint16_t 
 	}
 	return winners_tracker;
 }
-
+// Find the highest-probability F4 given the f4_picks
 float find_best_f4(uint16_t f4_picks[NUM_BRACKETS][NUM_ELEMENTS_BRACKET]){
 	f4_struct f4;
 	test_generator test_gen;
@@ -90,20 +93,28 @@ float find_best_f4(uint16_t f4_picks[NUM_BRACKETS][NUM_ELEMENTS_BRACKET]){
 	}
 	double full_probs[NUM_TEAMS+4][NUM_ROUNDS];
 	init_test_gen(&test_gen);
+	// populate the test bracket
 	find_test_teams(f4_picks, &test_gen);
+	// stops when the # of test scenarios has been completely iterated through
 	while(generate_test_scenario(&test_gen) == 1){
 		init_f4_struct(&f4);
-		// f4_picks to have the test f4_picks
 		for (uint16_t i = 0; i < NUM_ELEMENTS_BRACKET; i++){
 			f4s_plus_test[NUM_BRACKETS][i] = test_gen.test_f4[i];
 		}
+		// set up &f4s. Have an array element for each unique team. Then have one element at the end for all "unpicked" scenarios
 		find_unique_elements(f4s_plus_test, &f4);
+		// unpicked teams needs to be kept track of because those result in ties
 		generate_unpicked_probs(&f4);
+		// calcualte probabilities each f4 pick makes champ, wins champ, etc. Make last element into generic "untracked" 
 		calculate_full_probs(full_probs, &f4);
 		uint16_t winners[NUM_BRACKETS+1]; // need + 1 because we need to compare test bracket
+		// iterate through each f4 scenario. See who wins in each scenario, and what the probability of that scenario is. Add the probability of that scenario to the winner's win prob
 		while(generate_f4_scenario(&f4)==1){
+			// calculate probability of a given scenario
 			calculate_prob_scenario(full_probs, &f4);
+			// sometimes there's multiple winners
 			uint16_t num_winners = find_winner_scenario(f4.given_f4, f4s_plus_test, winners);
+			// total_prob is just for debugging
 			total_prob += f4.prob_scenario;
 			num_scenarios++;
 			for(uint16_t i = 0; i<num_winners; i++){
@@ -121,7 +132,7 @@ float find_best_f4(uint16_t f4_picks[NUM_BRACKETS][NUM_ELEMENTS_BRACKET]){
 	return max_test_prob;
 }
 
-//TODO: this approach seems not great
+
 void calculate_full_probs(double full_probs[NUM_TEAMS+4][NUM_ROUNDS], f4_struct *f4){
 	for (uint16_t i = 0; i < NUM_TEAMS; i++){
 		for(uint16_t j = 0; j < NUM_ROUNDS; j++){
