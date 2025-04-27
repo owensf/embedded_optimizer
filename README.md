@@ -16,5 +16,6 @@ Like I said, the scope changed a lot as I realized how long running all this com
 The meat of it is in f4s.h and find_best_f4.c
 
 f4s.h contains the data, including the final four picks, probabilities for different scnearios, etc.
+team_decoder.txt turns the numbers of teams into real time neams
 find_best_f4.c contains a lot of unfinished functions. The most interesting one that's finished is find_best_f4, which calculates the probability of the bracket that has the highest probability of winning. 
 simulate_bracket.py is a sanity check I did in python to make sure my find_best_f4.c was working properly.
