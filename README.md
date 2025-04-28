@@ -19,3 +19,6 @@ f4s.h contains the data, including the final four picks, probabilities for diffe
 team_decoder.txt turns the numbers of teams into real time neams
 find_best_f4.c contains a lot of unfinished functions. The most interesting one that's finished is find_best_f4, which calculates the probability of the bracket that has the highest probability of winning. 
 simulate_bracket.py is a sanity check I did in python to make sure the math on my find_best_f4.c was working right
+
+# Results:
+Best pick to make given the current pool: Texas winner, Creighton runner-up, with Gonzaga and Duke also in the Final Four, for a 12.7% chance of winning. Not too bad with 13 other people
